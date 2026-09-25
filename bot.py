@@ -286,7 +286,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton("🏠 القائمة الرئيسية", callback_data="main_menu")]
         ]
         await query.edit_message_text("📺 توثيق يوتيوب: اختر المدة:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
-
+        
     # --- 5. خدمات متنوعة ---
     elif data == "menu_various":
         keyboard = [
@@ -353,7 +353,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "🪟 خدمات ويندوز\n✍️ يرجى تزويدنا بالمعلومات المطلوبة في رسالة واحدة:",
             reply_markup=back_to_main_keyboard()
         )
-
+        
     # --- 8. خدمات مزودين الانترنت ---
     elif data == "menu_internet":
         keyboard = [
@@ -419,7 +419,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton("🏠 القائمة الرئيسية", callback_data="main_menu")]
         ]
         await query.edit_message_text("💳 شحن رصيد في البوت (eCHANCY): اختر الطريقة:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
-
+        
     elif data == "echancy_withdraw_bot":
         keyboard = [
             [InlineKeyboardButton("Sham cash (usd-syp)", callback_data="buy_done")],
