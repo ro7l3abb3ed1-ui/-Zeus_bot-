@@ -39,7 +39,7 @@ def main_menu_keyboard():
         [InlineKeyboardButton("💬 التطبيقات الصوتية والدردشة / CHAT APP", callback_data="menu_chat_apps")],
         [InlineKeyboardButton("💳 تعبئة الرصيد / RECHARGE", callback_data="menu_recharge")],
         [InlineKeyboardButton("💰 خدمات شام كاش / SHAM CASH", callback_data="menu_sham_cash")],
-        [InlineKeyboardButton("💱 قسم الإيتشانسي / iCHANCY", callback_data="menu_echancy")],
+        [InlineKeyboardButton("💱 قسم الإيتشانسي / iCHANCY", callback_data="menu_ichancy")],
         [InlineKeyboardButton("🔐 توثيق الحسابات / ACCOUNTS VERIFICATION", callback_data="menu_verification")],
         [InlineKeyboardButton("🌐 خدمات متنوعة / Various Services", callback_data="menu_various")],
         [InlineKeyboardButton("🛡️ خدمة تخطي الموقع VPN (بروكسي)", callback_data="menu_vpn")],
@@ -423,7 +423,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         await query.edit_message_text("💱 قسم الإيتشانسي (iCHANCY):", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
-    elif data == "echancy_main":
+    elif data == "ichancy_main":
         keyboard = [
             [InlineKeyboardButton("حذف الحساب", callback_data="buy_done"), InlineKeyboardButton("شحن الحساب", callback_data="buy_done")],
             [InlineKeyboardButton("شحن كامل الرصيد", callback_data="buy_done")],
@@ -431,7 +431,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         await query.edit_message_text("🎰 خدمات ichancy:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
-    elif data == "echancy_deposit_bot":
+    elif data == "ichancy_deposit_bot":
         keyboard = [
             [InlineKeyboardButton("Sham cash (usd-syp)", callback_data="buy_done")],
             [InlineKeyboardButton("Syriatel cash", callback_data="buy_done")],
