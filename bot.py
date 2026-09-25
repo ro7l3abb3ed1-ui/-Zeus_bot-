@@ -5,7 +5,7 @@ from threading import Thread
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, ContextTypes, filters
 
-# إعداد السجلات (Logging)
+# إعداد السجلات
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -33,15 +33,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     welcome_text = (
         f"أهلاً بك يا {user.first_name} في بوت الخدمات الموثوق ⚡\n\n"
-        "اختر الخدمة التي تحتاجها من القائمة أدناه، وسيتولى البوت الباقي.\n"
-        "ننتظر منك تجربة مميزة! ❤️"
+        "سرعة في التنفيذ 💼 خدمة موثوقة ومتابعة عند الحاجة.\n"
+        "اختر الخدمة اللي بتحتاجها من القائمة وخلي البوت يهتم بالباقي.\n"
+        "شكراً لثقتك فينا، ونتمنى لك تجربة مميزة! ❤️"
     )
     
     keyboard = [
         [InlineKeyboardButton("🎮 الألعاب / GAMES", callback_data="games")],
+        [InlineKeyboardButton("💬 التطبيقات الصوتية والدردشة / CHAT APP", callback_data="chat_app")],
         [InlineKeyboardButton("💳 تعبئة الرصيد / RECHARGE", callback_data="recharge")],
         [InlineKeyboardButton("💰 خدمات شام كاش / SHAM CASH", callback_data="sham_cash")],
         [InlineKeyboardButton("📊 قسم الإيتشانسي / eCHANCY", callback_data="echancy")],
+        [InlineKeyboardButton("🔒 توثيق الحسابات / ACCOUNTS VERIFICATION", callback_data="verification")],
+        [InlineKeyboardButton("🌐 خدمات متنوعة / Various Services", callback_data="various")],
+        [InlineKeyboardButton("🛡️ خدمة تخطي الموقع VPN (بروكسي)", callback_data="vpn")],
+        [InlineKeyboardButton("🗂️ خدمات ويندوز / WINDOWS SERVICES", callback_data="windows")],
+        [InlineKeyboardButton("🌐 خدمات مزودين الانترنت / INTERNET SERVICES", callback_data="internet")],
         [InlineKeyboardButton("🎧 خدمة العملاء / SUPPORT TEAM", callback_data="support")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -57,13 +64,18 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     data = query.data
 
+    back_btn = [[InlineKeyboardButton("🔙 القائمة الرئيسية", callback_data="main_menu")]]
+
     if data == "support":
-        text = "💬 للاتصال بفريق الدعم الفني، يرجى التواصل عبر المعرف التالي:\n@YourSupportUsername"
-        keyboard = [[InlineKeyboardButton("🔙 القائمة الرئيسية", callback_data="main_menu")]]
-        await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        text = "💬 **قسم خدمة العملاء والدعم الفني:**\nيرجى التواصل معنا مباشرة لأي استفسار أو متابعة طلبك."
+        keyboard = [
+            [InlineKeyboardButton("📞 التواصل مع الدعم", url="https://t.me/YourSupportUsername")],
+            [InlineKeyboardButton("🔙 القائمة الرئيسية", callback_data="main_menu")]
+        ]
+        await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
     elif data == "recharge":
-        text = "💳 **تعبئة الرصيد:**\nالرجاء التحويل إلى حساب شام كاش رقم: `0912345678`\nثم اضغط على الزر أدناه لإرسال رقم العملية أو الإيصال."
+        text = "💳 **تعبئة الرصيد:**\nالرجاء التحويل إلى الحساب المطلوب، ثم اضغط على الزر أدناه لإرسال رقم العملية أو الإيصال."
         keyboard = [
             [InlineKeyboardButton("📤 إرسال إيصال التحويل", callback_data="send_receipt")],
             [InlineKeyboardButton("🔙 القائمة الرئيسية", callback_data="main_menu")]
@@ -71,28 +83,48 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
     elif data == "sham_cash":
-        text = "💰 **خدمات شام كاش:**\nاختر نوع الخدمة أو أرسل مبلغ التحويل إلى الحساب المعتمد، ثم تواصل معنا بالإيصال."
+        text = "💰 **خدمات شام كاش:**\nاختر نوع الخدمة أو أرسل التحويل إلى الحساب المعتمد، ثم أرسل الإيصال للمتابعة الفورية."
         keyboard = [
             [InlineKeyboardButton("📤 إرسال إيصال التحويل", callback_data="send_receipt")],
             [InlineKeyboardButton("🔙 القائمة الرئيسية", callback_data="main_menu")]
         ]
         await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
-    elif data == "echancy":
-        text = "📊 **قسم الإيتشانسي:**\nخدمات مخصصة وسريعة. يرجى اختيار الخدمة المطلوبة أو التواصل مع الدعم للتفاصيل."
+    elif data == "games":
+        text = "🎮 **قسم الألعاب:**\nيتوفر لدينا شحن لكافة الألعاب الشهيرة بأسعار منافسة وبسرعة تنفيذ عالية."
         keyboard = [
-            [InlineKeyboardButton("🎧 التواصل مع الدعم", callback_data="support")],
+            [InlineKeyboardButton("💳 اطلب شحن رصيد", callback_data="recharge")],
             [InlineKeyboardButton("🔙 القائمة الرئيسية", callback_data="main_menu")]
         ]
         await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
 
-    elif data == "games":
-        text = "🎮 **قسم الألعاب:**\nيتوفر لدينا شحن لكافة الألعاب الشهيرة بأسعار منافسة وبسرعة تنفيذ عالية."
-        keyboard = [
-            [InlineKeyboardButton("💳 اطلب شحن رصيد لعبة", callback_data="recharge")],
-            [InlineKeyboardButton("🔙 القائمة الرئيسية", callback_data="main_menu")]
-        ]
-        await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+    elif data == "chat_app":
+        text = "💬 **التطبيقات الصوتية والدردشة:**\nخدمات تفعيل الشحن ودعم تطبيقات التواصل الاجتماعي والدردشة."
+        await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(back_btn))
+
+    elif data == "echancy":
+        text = "📊 **قسم الإيتشانسي:**\nخدمات مخصصة وسريعة. يرجى اختيار الخدمة المطلوبة أو التواصل مع الدعم للتفاصيل."
+        await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(back_btn))
+
+    elif data == "verification":
+        text = "🔒 **توثيق الحسابات:**\nنوفر خدمات توثيق الحسابات الرسمية والشخصية بأعلى معايير الأمان."
+        await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(back_btn))
+
+    elif data == "various":
+        text = "🌐 **خدمات متنوعة:**\nمجموعة واسعة من الخدمات الرقمية لتلبية كافة احتياجاتك اليومية."
+        await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(back_btn))
+
+    elif data == "vpn":
+        text = "🛡️ **خدمة تخطي الموقع VPN (بروكسي):**\nاشتراكات سريعة وآمنة لتخطي الحجب وتصفح الإنترنت بحرية."
+        await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(back_btn))
+
+    elif data == "windows":
+        text = "🗂️ **خدمات ويندوز:**\nتفعيل نُظم التشغيل، البرامج، وتوفير الحلول التقنية لأجهزة الكمبيوتر."
+        await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(back_btn))
+
+    elif data == "internet":
+        text = "🌐 **خدمات مزودين الانترنت:**\nتسديد باقات الإنترنت وشحن الأرصدة لمختلف المزودين."
+        await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(back_btn))
 
     elif data == "main_menu":
         await start(update, context)
@@ -103,16 +135,15 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = [[InlineKeyboardButton("🔙 إلغاء والعودة", callback_data="main_menu")]]
         await query.message.edit_text(text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
-# استقبال الإيصالات أو الرسائل النصية من المستخدمين
+# استقبال الإيصالات أو الرسائل النصية والرد الآلي
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.user_data.get('waiting_for_receipt'):
         user = update.effective_user
         context.user_data['waiting_for_receipt'] = False
         
-        confirmation_text = "✅ تم استلام طلبك وإرسال الإيصال إلى الإدارة بنجاح! سيتم مراجعته وشحن حسابك في أقرب وقت."
+        confirmation_text = "✅ تم استلام طلبك وإرسال الإيصال إلى الإدارة بنجاح! سيتم مراجعته وتأكيد طلبك في أقرب وقت."
         await update.message.reply_text(confirmation_text)
         
-        # إذا قمت بوضع الأيدي الخاص بك، سيصلك إشعار بالطلب هنا (اختياري)
         if ADMIN_CHAT_ID != "ضع_معرف_حسابك_هنا":
             forward_msg = f"🔔 طلب دفع جديد من المستخدم:\nالاسم: {user.first_name}\nالمعرف: @{user.username or 'لا يوجد'}\nالايدي: {user.id}"
             try:
@@ -121,12 +152,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             except Exception as e:
                 logger.error(f"Failed to notify admin: {e}")
     else:
-        # رد آلي لأي رسالة عشوائية تفتح القائمة
+        # الرد الآلي بالقائمة الرئيسية لأي رسالة عشوائية
         await start(update, context)
 
 # ----------------- التشغيل الأساسي -----------------
 def main():
-    keep_alive() # تشغيل السيرفر الوهمي
+    keep_alive()
     
     application = Application.builder().token(TOKEN).build()
 
