@@ -1,5 +1,7 @@
 import os
 import logging
+from threading import Thread
+from flask import Flask
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, CallbackQueryHandler, MessageHandler, filters
 
@@ -11,6 +13,23 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 TOKEN = "8758104476:AAHjxWd07l4FAgcO-9lueLQB0zG_9cIWg-Y"
+
+# ----------------- إعداد خادم الويب (Flask) لمنع مشكلة Timeout على Render -----------------
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot is running and active!"
+
+def run_web():
+    # استخدام المنفذ المخصص من منصة Render أو الافتراضي 8080
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
+
+def keep_alive():
+    t = Thread(target=run_web)
+    t.start()
+# -----------------------------------------------------------------------------------------
 
 # ----------------- لوحات المفاتيح (Keyboards) -----------------
 
@@ -469,6 +488,9 @@ async def handle_text_messages(update: Update, context: ContextTypes.DEFAULT_TYP
 
 # ----------------- الدالة الرئيسية لتشغيل البوت -----------------
 def main():
+    # تشغيل خادم الويب الخفي أولاً لإبقاء السيرفر نشطاً على Render
+    keep_alive()
+
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
