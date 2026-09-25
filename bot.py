@@ -70,7 +70,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton("🏠 القائمة الرئيسية", callback_data="main_menu")]
         ]
         await query.edit_message_text("🎮 قسم الألعاب: اختر اللعبة المطلوبة:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
-
+        
     elif data == "game_freefire":
         keyboard = [
             [InlineKeyboardButton("شحن جواهر فري فاير", callback_data="ff_diamonds")],
@@ -130,7 +130,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton("🏠 القائمة الرئيسية", callback_data="main_menu")]
         ]
         await query.edit_message_text("📦 عضويات وباقات ببجي:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
-
+        
     elif data in ["game_coc", "game_cr"]:
         await query.edit_message_text("⏳ قريباً...", reply_markup=back_to_main_keyboard(), parse_mode="Markdown")
 
@@ -226,7 +226,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton("🏠 القائمة الرئيسية", callback_data="main_menu")]
         ]
         await query.edit_message_text("🟡 Sugo Chat:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
-
+        
     elif data == "app_honeyjar":
         keyboard = [
             [InlineKeyboardButton("1000 - 10$", callback_data="buy_done"), InlineKeyboardButton("2000 - 18$", callback_data="buy_done")],
@@ -440,7 +440,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # --- إتمام الشراء / الطلب النهائي ---
     elif data == "buy_done":
         await query.edit_message_text(
-            "✅ تم استلاستلم طلبك، ستتم المعالجة خلال مدة أقصاها ربع ساعة، شكراً لانتظاركم ❤️",
+            "✅ تم استلام طلبك، ستتم المعالجة خلال مدة أقصاها ربع ساعة، شكراً لانتظاركم ❤️",
             reply_markup=back_to_main_keyboard()
         )
 
