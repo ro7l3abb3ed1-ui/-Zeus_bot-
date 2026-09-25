@@ -1,9 +1,11 @@
 import os
 import logging
+from flask import Flask
+from threading import Thread
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, CallbackQueryHandler, MessageHandler, filters
 
-# إعداد السجلات لمعرفة الأخطاء وحالة التشغيل
+# إعداد السجلات
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
@@ -12,7 +14,22 @@ logger = logging.getLogger(__name__)
 
 TOKEN = "8758104476:AAELYEZecA4x78f5ytIZrKctHqEZS7e6sRg"
 
-# ----------------- لوحات المفاتيح (Keyboards) -----------------
+# --- خادم ويب وهمي لكي تقبل منصة Render الخدمة مجاناً ---
+app_flask = Flask('')
+
+@app_flask.route('/')
+def home():
+    return "Bot is running live!"
+
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app_flask.run(host='0.0.0.0', port=port)
+
+def keep_alive():
+    t = Thread(target=run_flask)
+    t.start()
+
+# --- لوحات المفاتيح (Keyboards) ---
 
 def main_menu_keyboard():
     keyboard = [
@@ -33,7 +50,7 @@ def main_menu_keyboard():
 def back_to_main_keyboard():
     return InlineKeyboardMarkup([[InlineKeyboardButton("🏠 القائمة الرئيسية", callback_data="main_menu")]])
 
-# ----------------- دوال العرض والتحكم -----------------
+# --- دوال البوت ---
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     welcome_text = (
@@ -60,7 +77,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await start(update, context)
         return
 
-    # --- 1. قسم الألعاب ---
+    # --- الألعاب ---
     elif data == "menu_games":
         keyboard = [
             [InlineKeyboardButton("Free Fire", callback_data="game_freefire"), InlineKeyboardButton("Jawaker", callback_data="game_jawaker")],
@@ -159,7 +176,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         await query.edit_message_text("⚡ **Fortnite**: اختر البطاقة:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
-    # --- 2. التطبيقات الصوتية والدردشة ---
+    # --- التطبيقات الصوتية ---
     elif data == "menu_chat_apps":
         keyboard = [
             [InlineKeyboardButton("Bigo Live", callback_data="app_bigo"), InlineKeyboardButton("Soul Chill", callback_data="app_soulchill")],
@@ -256,7 +273,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         await query.edit_message_text("🟢 **Mico Live**:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
-    # --- 3. تعبئة الرصيد (RECHARGE) ---
+    # --- تعبئة الرصيد ---
     elif data == "menu_recharge":
         keyboard = [
             [InlineKeyboardButton("Syriatel", callback_data="recharge_syriatel"), InlineKeyboardButton("MTN", callback_data="recharge_mtn")],
@@ -271,7 +288,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=back_to_main_keyboard()
         )
 
-    # --- 4. توثيق الحسابات ---
+    # --- توثيق الحسابات ---
     elif data == "menu_verification":
         keyboard = [
             [InlineKeyboardButton("توثيق حساب يوتيوب", callback_data="ver_youtube")],
@@ -287,7 +304,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         await query.edit_message_text("📺 **توثيق يوتيوب**: اختر المدة:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
-    # --- 5. خدمات متنوعة ---
+    # --- خدمات متنوعة ---
     elif data == "menu_various":
         keyboard = [
             [InlineKeyboardButton("نجوم تلغرام", callback_data="var_telegram_stars")],
@@ -320,7 +337,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=back_to_main_keyboard()
         )
 
-    # --- 6. خدمة تخطي الموقع VPN (بروكسي) ---
+    # --- خدمة تخطي الموقع VPN ---
     elif data == "menu_vpn":
         keyboard = [
             [InlineKeyboardButton("Express VPN", callback_data="vpn_express")],
@@ -346,7 +363,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         await query.edit_message_text("🛡️ **Hotspot Shield**:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
-    # --- 7. خدمات ويندوز ---
+    # --- خدمات ويندوز ---
     elif data == "menu_windows":
         context.user_data['waiting_input'] = "windows"
         await query.edit_message_text(
@@ -354,7 +371,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=back_to_main_keyboard()
         )
 
-    # --- 8. خدمات مزودين الانترنت ---
+    # --- خدمات مزودين الانترنت ---
     elif data == "menu_internet":
         keyboard = [
             [InlineKeyboardButton("مزود سوا", callback_data="net_provider")],
@@ -375,7 +392,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=back_to_main_keyboard()
         )
 
-    # --- 9. خدمات شام كاش ---
+    # --- خدمات شام كاش ---
     elif data == "menu_sham_cash":
         keyboard = [
             [InlineKeyboardButton("شحن رصيد", callback_data="sham_deposit")],
@@ -392,7 +409,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=back_to_main_keyboard()
         )
 
-    # --- 10. قسم الإيتشانسي eCHANCY ---
+    # --- قسم الإيتشانسي eCHANCY ---
     elif data == "menu_echancy":
         keyboard = [
             [InlineKeyboardButton("ichancy (سحب/شحن)", callback_data="echancy_main")],
@@ -437,14 +454,13 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=back_to_main_keyboard()
         )
 
-    # --- إتمام الشراء / الطلب النهائي ---
+    # --- إتمام الشراء ---
     elif data == "buy_done":
         await query.edit_message_text(
             "✅ تم استلام طلبك، ستتم المعالجة خلال مدة أقصاها ربع ساعة، شكراً لانتظاركم ❤️",
             reply_markup=back_to_main_keyboard()
         )
 
-# ----------------- معالجة رسائل النصوص المدخلة من المستخدم -----------------
 async def handle_text_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
     waiting_type = context.user_data.get('waiting_input')
     
@@ -464,18 +480,19 @@ async def handle_text_messages(update: Update, context: ContextTypes.DEFAULT_TYP
             reply_markup=main_menu_keyboard()
         )
     
-    # إعادة تعيين الحالة
     context.user_data['waiting_input'] = None
 
-# ----------------- الدالة الرئيسية لتشغيل البوت -----------------
 def main():
+    # تشغيل السيرفر الوهمي بالخلفية
+    keep_alive()
+    
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(button_handler))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_messages))
 
-    print("البوت يعمل الآن بنجاح...")
+    print("Bot is polling...")
     app.run_polling()
 
 if __name__ == "__main__":
