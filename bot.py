@@ -10,7 +10,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-TOKEN = "8758104476:AAELYEZecA4x78f5ytIZrKctHqEZS7e6sRg"
+TOKEN = "8758104476:AAHjxWd07l4FAgcO-9lueLQB0zG_9cIWg-Y"
 
 # ----------------- لوحات المفاتيح (Keyboards) -----------------
 
