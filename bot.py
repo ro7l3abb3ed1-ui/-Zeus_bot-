@@ -412,15 +412,16 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     # --- 10. قسم الإيتشانسي eCHANCY ---
-    elif data == "menu_echancy":
+    elif data == "menu_ichancy":
         keyboard = [
-            [InlineKeyboardButton("ichancy (سحب/شحن)", callback_data="echancy_main")],
-            [InlineKeyboardButton("شحن رصيد في البوت", callback_data="echancy_deposit_bot")],
-            [InlineKeyboardButton("سحب رصيد من البوت", callback_data="echancy_withdraw_bot")],
+            [InlineKeyboardButton("ichancy (انشاء حساب جديد)", callback_data="ichancy_main")],
+            [InlineKeyboardButton("ichancy (سحب/شحن)", callback_data="ichancy_main")],
+            [InlineKeyboardButton("شحن رصيد في البوت", callback_data="ichancy_deposit_bot")],
+            [InlineKeyboardButton("سحب رصيد من البوت", callback_data="ichancy_withdraw_bot")],
             [InlineKeyboardButton("رسالة للدعم", callback_data="support")],
             [InlineKeyboardButton("🏠 القائمة الرئيسية", callback_data="main_menu")]
         ]
-        await query.edit_message_text("💱 قسم الإيتشانسي (eCHANCY):", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
+        await query.edit_message_text("💱 قسم الإيتشانسي (iCHANCY):", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
     elif data == "echancy_main":
         keyboard = [
