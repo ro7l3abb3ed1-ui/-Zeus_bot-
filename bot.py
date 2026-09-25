@@ -39,7 +39,7 @@ def main_menu_keyboard():
         [InlineKeyboardButton("💬 التطبيقات الصوتية والدردشة / CHAT APP", callback_data="menu_chat_apps")],
         [InlineKeyboardButton("💳 تعبئة الرصيد / RECHARGE", callback_data="menu_recharge")],
         [InlineKeyboardButton("💰 خدمات شام كاش / SHAM CASH", callback_data="menu_sham_cash")],
-        [InlineKeyboardButton("💱 قسم الإيتشانسي / eCHANCY", callback_data="menu_echancy")],
+        [InlineKeyboardButton("💱 قسم الإيتشانسي / iCHANCY", callback_data="menu_echancy")],
         [InlineKeyboardButton("🔐 توثيق الحسابات / ACCOUNTS VERIFICATION", callback_data="menu_verification")],
         [InlineKeyboardButton("🌐 خدمات متنوعة / Various Services", callback_data="menu_various")],
         [InlineKeyboardButton("🛡️ خدمة تخطي الموقع VPN (بروكسي)", callback_data="menu_vpn")],
@@ -411,7 +411,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=back_to_main_keyboard()
         )
 
-    # --- 10. قسم الإيتشانسي eCHANCY ---
+    # --- 10. قسم الإيتشانسي iCHANCY ---
     elif data == "menu_ichancy":
         keyboard = [
             [InlineKeyboardButton("ichancy (انشاء حساب جديد)", callback_data="ichancy_main")],
